@@ -1,0 +1,177 @@
+<template>
+  <div class="container">
+    <router-link to="/" class="btn btn-link text-info my-1">
+      <h5><i class="fas fa-arrow-alt-circle-left"></i> Back to Dashboard</h5>
+    </router-link>
+
+    <div class="card my-2">
+      <div class="card-header">Edit Contact</div>
+      <div class="card-body">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              required
+              type="text"
+              name="name"
+              class="form-control form-control-lg"
+              :placeholder="contact.name"
+              v-model="name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email(s):</label>
+            <i
+              class="fa fa-plus float-right text-info addInput"
+              title="Add Email"
+              data-toggle="modal"
+              data-target="#emailModal"
+            ></i>
+            <Modal
+              dataTarget="emailModal"
+              text="Email"
+              type="email"
+              @add-input="addNewEmail"
+            />
+            <input
+              required
+              :key="email.id"
+              v-for="email in contact.emails"
+              type="email"
+              name="email"
+              class="form-control form-control-lg mb-3"
+              :placeholder="email"
+              v-model="Email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone(s):</label>
+            <i
+              class="fa fa-plus float-right text-info addInput"
+              title="Add Phone"
+              data-toggle="modal"
+              data-target="#phoneModal"
+            ></i>
+            <Modal
+              dataTarget="phoneModal"
+              text="Phone"
+              type="text"
+              @add-input="addNewPhone"
+            />
+            <input
+              required
+              :key="phone.id"
+              v-for="phone in contact.phones"
+              type="text"
+              name="phone"
+              class="form-control form-control-lg mb-3"
+              :placeholder="phone"
+              v-model="Phone"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">City(ies):</label>
+            <i
+              class="fa fa-plus float-right text-info addInput"
+              title="Add Location"
+              data-toggle="modal"
+              data-target="#locationModal"
+            ></i>
+            <Modal
+              dataTarget="locationModal"
+              text="City"
+              type="text"
+              @add-input="addNewLocation"
+            />
+            <input
+              required
+              :key="address.id"
+              v-for="address in contact.addresses"
+              type="text"
+              name="address"
+              class="form-control form-control-lg mb-3"
+              :placeholder="address"
+              v-model="City"
+            />
+          </div>
+          <input
+            type="submit"
+            value="Update Contact"
+            class="btn btn-light btn-block"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters, mapActions } from "vuex";
+
+  import Modal from "../layout/Modal";
+
+  export default {
+    name: "EditContact",
+    components: {
+      Modal,
+    },
+    data() {
+      return {
+        id: this.$route.params.id,
+        name: "",
+        Email: "",
+        Phone: "",
+        City: "",
+      };
+    },
+    computed: mapGetters(["contact"]),
+    methods: {
+      ...mapActions([
+        "fetchContact",
+        "updateContact",
+        "clearContact",
+        "addEmail",
+        "addPhone",
+        "addLocation",
+        "setId",
+      ]),
+      handleSubmit() {
+        const updContact = {
+          id: this.contact.id,
+          name: this.name,
+          emails: [this.Email],
+          phones: [this.Phone],
+          addresses: [this.City],
+        };
+
+        this.updateContact(updContact);
+        this.$router.push({ path: "/" });
+      },
+
+      addNewEmail(email) {
+        this.addEmail(email);
+      },
+      addNewPhone(phone) {
+        this.addPhone(phone);
+      },
+      addNewLocation(city) {
+        this.addLocation(city);
+      },
+    },
+    created() {
+      this.fetchContact(this.id);
+      this.setId(this.id);
+    },
+    beforeDestroy() {
+      this.clearContact();
+      this.setId("");
+    },
+  };
+</script>
+
+<style scoped>
+  .addInput {
+    cursor: pointer;
+  }
+</style>
