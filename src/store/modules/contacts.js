@@ -71,6 +71,18 @@ const actions = {
 		commit('clearContact');
 	},
 
+	deleteEmail({ commit }, index) {
+		commit('delEmail', index);
+	},
+
+	deletePhone({ commit }, index) {
+		commit('delPhone', index);
+	},
+
+	deleteLocation({ commit }, index) {
+		commit('delLocation', index);
+	},
+
 	// set loading true
 	setLoading({ commit }) {
 		commit('setLoadingTrue');
@@ -127,6 +139,30 @@ const mutations = {
 		state.contacts.forEach(contact => {
 			if (contact.id == state.id) {
 				contact.addresses = [...contact.addresses, city];
+			}
+		});
+	},
+
+	delEmail: (state, index) => {
+		state.contacts.forEach(contact => {
+			if (contact.id == state.id) {
+				contact.emails.splice(index, 1);
+			}
+		});
+	},
+
+	delPhone: (state, index) => {
+		state.contacts.forEach(contact => {
+			if (contact.id == state.id) {
+				contact.phones.splice(index, 1);
+			}
+		});
+	},
+
+	delLocation: (state, index) => {
+		state.contacts.forEach(contact => {
+			if (contact.id == state.id) {
+				contact.addresses.splice(index, 1);
 			}
 		});
 	},

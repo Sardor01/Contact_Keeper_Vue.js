@@ -32,15 +32,22 @@
               type="email"
               @add-input="addNewEmail"
             />
-            <input
+            <div
               :key="index"
               v-for="(email, index) in contact.emails"
-              type="email"
-              name="email"
-              class="form-control form-control-lg mb-3"
-              :placeholder="email"
-              v-model="user.emails[index]"
-            />
+              class="position-relative changingInput"
+            >
+              <input
+                type="email"
+                name="email"
+                class="form-control form-control-lg mb-3"
+                :placeholder="email"
+                v-model="user.emails[index]"
+              />
+              <span class="inputDelete" @click="delEmail(index)">
+                <i class="fas fa-minus-square"></i>
+              </span>
+            </div>
           </div>
           <div class="form-group">
             <label for="phone">Phone(s):</label>
@@ -56,21 +63,28 @@
               type="text"
               @add-input="addNewPhone"
             />
-            <input
+            <div
               :key="index"
               v-for="(phone, index) in contact.phones"
-              type="text"
-              name="phone"
-              class="form-control form-control-lg mb-3"
-              :placeholder="phone"
-              v-model="user.phones[index]"
-            />
+              class="position-relative changingInput"
+            >
+              <input
+                type="text"
+                name="phone"
+                class="form-control form-control-lg mb-3"
+                :placeholder="phone"
+                v-model="user.phones[index]"
+              />
+              <span class="inputDelete" @click="delPhone(index)">
+                <i class="fas fa-minus-square"></i>
+              </span>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="phone">City(ies):</label>
             <i
-              class="fa fa-plus float-right text-info addInput"
+              class="fa fa-plus float-right text-info"
               title="Add Location"
               data-toggle="modal"
               data-target="#locationModal"
@@ -81,15 +95,22 @@
               type="text"
               @add-input="addNewLocation"
             />
-            <input
+            <div
               :key="index"
               v-for="(address, index) in contact.addresses"
-              type="text"
-              name="address"
-              class="form-control form-control-lg mb-3"
-              :placeholder="address"
-              v-model="user.location[index]"
-            />
+              class="position-relative changingInput"
+            >
+              <input
+                type="text"
+                name="address"
+                class="form-control form-control-lg mb-3"
+                :placeholder="address"
+                v-model="user.location[index]"
+              />
+              <span class="inputDelete" @click="delLocation(index)">
+                <i class="fas fa-minus-square"></i>
+              </span>
+            </div>
           </div>
           <input
             type="submit"
@@ -133,6 +154,9 @@
         "addPhone",
         "addLocation",
         "setId",
+        "deleteEmail",
+        "deletePhone",
+        "deleteLocation",
       ]),
 
       handleSubmit() {
@@ -169,6 +193,16 @@
       addNewLocation(city) {
         this.addLocation(city);
       },
+
+      delEmail(index) {
+        this.deleteEmail(index);
+      },
+      delPhone(index) {
+        this.deletePhone(index);
+      },
+      delLocation(index) {
+        this.deleteLocation(index);
+      },
     },
     created() {
       this.fetchContact(this.id);
@@ -184,5 +218,24 @@
 <style scoped>
   .addInput {
     cursor: pointer;
+  }
+
+  .inputDelete {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(0, -50%);
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    cursor: pointer;
+    color: #5bc0de;
+    font-weight: 900;
+    text-align: center;
+    border-radius: 50%;
+    display: none;
+  }
+
+  .changingInput:hover .inputDelete {
+    display: inline;
   }
 </style>
