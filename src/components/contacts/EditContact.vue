@@ -84,7 +84,7 @@
           <div class="form-group">
             <label for="phone">City(ies):</label>
             <i
-              class="fa fa-plus float-right text-info"
+              class="fa fa-plus float-right text-info addInput"
               title="Add Location"
               data-toggle="modal"
               data-target="#locationModal"
