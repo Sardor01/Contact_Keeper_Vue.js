@@ -178,6 +178,7 @@
           emails: [...this.user.emails],
           phones: [...this.user.phones],
           addresses: [...this.user.location],
+          showCardList: true,
         };
 
         this.updateContact(updContact);

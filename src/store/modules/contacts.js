@@ -6,6 +6,7 @@ const state = {
 			emails: ['Sincere@april.biz'],
 			addresses: ['Kulas Light'],
 			phones: ['1-770-736-8031 x56442'],
+			showCardList: true,
 		},
 		{
 			id: 2,
@@ -13,6 +14,7 @@ const state = {
 			emails: ['Shanna@melissa.tv'],
 			addresses: ['Victor Plains'],
 			phones: ['010-692-6593 x09125'],
+			showCardList: true,
 		},
 		{
 			id: 3,
@@ -20,6 +22,7 @@ const state = {
 			emails: ['Nathan@yesenia.net'],
 			addresses: ['Douglas Extension'],
 			phones: ['1-463-123-4447'],
+			showCardList: true,
 		},
 	],
 	contact: {},
@@ -83,6 +86,11 @@ const actions = {
 		commit('delLocation', index);
 	},
 
+	// Filter Contacts
+	filterContacts({ commit }, term) {
+		commit('filtrContacts', term);
+	},
+
 	// set loading true
 	setLoading({ commit }) {
 		commit('setLoadingTrue');
@@ -141,6 +149,35 @@ const mutations = {
 				contact.addresses = [...contact.addresses, city];
 			}
 		});
+	},
+
+	// Filter
+	filtrContacts: (state, term) => {
+		const text = term.toString().toLowerCase();
+
+		state.contacts.forEach(contact => {
+			if (
+				contact.name
+					.toString()
+					.toLowerCase()
+					.includes(text)
+			) {
+				contact.showCardList = true;
+			} else {
+				contact.showCardList = false;
+			}
+		});
+
+		// state.contacts.filter((contact, index) => {
+		// 	if (
+		// 		contact.name
+		// 			.toString()
+		// 			.toLowerCase()
+		// 			.indexOf(text) === -1
+		// 	) {
+		// 		state.contacts.splice(index, 1);
+		// 	}
+		// });
 	},
 
 	delEmail: (state, index) => {
